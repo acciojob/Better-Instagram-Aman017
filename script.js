@@ -1,15 +1,14 @@
-//your code here
 document.addEventListener("DOMContentLoaded", () => {
     const divs = document.querySelectorAll(".image");
-    let draggedElement = null;
     
     divs.forEach((div, index) => {
-        div.setAttribute("id", `div${index + 1}`);
+        div.setAttribute("id", `drag${index + 1}`); // Ensure correct IDs
         div.style.backgroundImage = getComputedStyle(div).backgroundImage;
         
+        div.setAttribute("draggable", "true"); // Ensure elements are draggable
+
         div.addEventListener("dragstart", (event) => {
-            draggedElement = event.target;
-            event.dataTransfer.setData("text/plain", event.target.id);
+            event.dataTransfer.setData("dragId", event.target.id);
         });
 
         div.addEventListener("dragover", (event) => {
@@ -18,12 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         div.addEventListener("drop", (event) => {
             event.preventDefault();
-            
-            if (draggedElement && draggedElement !== event.target) {
-                let draggedBg = draggedElement.style.backgroundImage;
-                draggedElement.style.backgroundImage = event.target.style.backgroundImage;
-                event.target.style.backgroundImage = draggedBg;
-            }
+
+            const draggedId = event.dataTransfer.getData("dragId");
+            const draggedElement = document.getElementById(draggedId);
+            const dropTarget = event.target;
+
+            if (!draggedElement || !dropTarget || draggedElement === dropTarget) return;
+
+            // Swap background images
+            let draggedBg = draggedElement.style.backgroundImage;
+            draggedElement.style.backgroundImage = dropTarget.style.backgroundImage;
+            dropTarget.style.backgroundImage = draggedBg;
         });
     });
 });
