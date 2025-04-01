@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const divs = document.querySelectorAll(".image");
     
     divs.forEach((div, index) => {
-        div.setAttribute("id", `drag${index + 1}`); // Ensure correct IDs
+        div.setAttribute("id", `div${index + 1}`); // Ensure correct IDs like div1, div2, etc.
         div.style.backgroundImage = getComputedStyle(div).backgroundImage;
         
         div.setAttribute("draggable", "true"); // Ensure elements are draggable
